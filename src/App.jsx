@@ -12,7 +12,7 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const { weather, thisLocation, values, place, setPlace } = useStateContext()
+  const { weather, thisLocation, values, place, setPlace, forecastData } = useStateContext()
 
   const submitCity = () => {
     if (!input.trim()) return;
@@ -33,7 +33,7 @@ function App() {
   }
 
   return (
-    <div className='w-full h-screen text-white px-8'>
+    <div className='w-full min-h-screen text-white px-8 pb-10'>
       <nav className='w-full p-3 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between'>
         <h1 className='font-bold tracking-wide text-3xl'>Weather App</h1>
 
@@ -46,7 +46,7 @@ function App() {
               className='focus:outline-none w-full text-[#212121] text-lg'
               value={input}
               onFocus={() => setIsDropdownOpen(true)}
-              onBlur={() => setTimeout(() => setIsDropdownOpen(false), 150)} // delay for click
+              onBlur={() => setTimeout(() => setIsDropdownOpen(false), 150)}
               onChange={e => setInput(e.target.value)}
             />
             <button
@@ -73,7 +73,8 @@ function App() {
         </div>
       </nav>
 
-      <BackgroundLayout></BackgroundLayout>
+      <BackgroundLayout />
+
       <main className='w-full flex flex-wrap gap-8 py-4 px-[10%] items-center justify-center'>
         <WeatherCard
           place={thisLocation}
@@ -100,6 +101,27 @@ function App() {
           }
         </div>
       </main>
+
+      
+      {forecastData?.length > 0 && (
+        <section className='px-[10%] mt-10'>
+          <h2 className='text-2xl font-semibold mb-4 text-center'>5-Day Forecast</h2>
+          <div className='flex flex-wrap justify-center gap-4'>
+            {forecastData.map((day, i) => (
+              <div key={i} className='bg-white text-[#212121] rounded-xl p-4 shadow-md w-28 text-center'>
+                <p className='font-bold text-sm'>{day.date}</p>
+                <img
+                  src={`https://openweathermap.org/img/wn/${day.icon}@2x.png`}
+                  alt={day.conditions}
+                  className='w-10 h-10 mx-auto my-2'
+                />
+                <p className='text-lg font-medium'>{day.temp}°C</p>
+                <p className='text-sm'>{day.conditions}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   )
 }
