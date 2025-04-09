@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useStateContext } from '../Context'
-//images
+
 import Clear from '../assets/images/Clear.jpg'
 import Fog from '../assets/images/fog.png'
 import Cloudy from '../assets/images/Cloudy.jpg'
